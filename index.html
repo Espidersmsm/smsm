@@ -5,85 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>اختبار الأستاذة السنيورة أسماء</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            direction: rtl;
-            text-align: right;
-            margin: 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
-        }
-        .question {
-            margin-bottom: 15px;
-        }
-        .result {
-            font-weight: bold;
-            color: green;
-            display: none;
-        }
+        body { font-family: Arial, sans-serif; direction: rtl; text-align: right; }
+        .container { width: 80%; margin: auto; }
+        .question { margin-bottom: 15px; }
+        .result { font-weight: bold; font-size: 20px; color: green; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>اختبار الأستاذة السنيورة أسماء</h2>
+        <h1>اختبار الأستاذة السنيورة أسماء</h1>
         <form id="quizForm">
             <div id="questionsContainer"></div>
-            <button type="button" onclick="submitQuiz()">إرسال</button>
+            <button type="button" onclick="calculateScore()">إرسال</button>
         </form>
-        <p class="result" id="result"></p>
+        <div id="result" class="result"></div>
     </div>
 
     <script>
-        const questions = [];
-        for (let i = 1; i <= 50; i++) {
-            questions.push({
-                question: `السؤال رقم ${i}: ما هو المفهوم الصحيح للتعلم النشط؟`,
-                options: ["طريقة تفاعلية", "تعلم نظري", "حفظ المعلومات فقط", "عدم التفاعل مع المحتوى"],
-                correct: 0
-            });
-        }
-
+        const questions = [
+            "كيف يمكن استخدام التكنولوجيا في التدريس بفعالية؟",
+            "كيف يمكن التعامل مع الطلاب ذوي الاحتياجات الخاصة؟",
+            "ما هو دور التغذية الراجعة في تحسين أداء الطلاب؟",
+            "ما هو دور الأنشطة اللاصفية في تطوير مهارات الطلاب؟",
+            "ما أهمية التقييم التكويني في العملية التعليمية؟",
+            "ما هو دور الطالب في التعلم الذاتي؟",
+            "كيف يمكن تعزيز الدافعية للتعلم لدى الطلاب؟",
+            "ما هي العلاقة بين التعلم النشط وحل المشكلات؟",
+            "ما هو أثر استخدام الاستراتيجيات الحديثة في التدريس؟",
+            "كيف يمكن تحقيق تكافؤ الفرص في التعليم؟"
+        ];
+        
+        const answers = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; // تحديد الإجابات الصحيحة هنا
+        
         function loadQuestions() {
-            const container = document.getElementById("questionsContainer");
+            const container = document.getElementById('questionsContainer');
             questions.forEach((q, index) => {
-                let div = document.createElement("div");
-                div.classList.add("question");
-                div.innerHTML = `<p>${index + 1}. ${q.question}</p>`;
-                q.options.forEach((option, i) => {
-                    div.innerHTML += `<label><input type='radio' name='q${index}' value='${i}'> ${option}</label><br>`;
-                });
-                container.appendChild(div);
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('question');
+                questionDiv.innerHTML = `
+                    <p>${index + 1}. ${q}</p>
+                    <input type="radio" name="q${index}" value="0"> إجابة صحيحة
+                    <input type="radio" name="q${index}" value="1"> إجابة خاطئة
+                `;
+                container.appendChild(questionDiv);
             });
         }
-
-        function submitQuiz() {
+        
+        function calculateScore() {
             let score = 0;
             questions.forEach((q, index) => {
-                let selected = document.querySelector(`input[name='q${index}']:checked`);
-                if (selected && parseInt(selected.value) === q.correct) {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                if (selected && parseInt(selected.value) === answers[index]) {
                     score++;
                 }
             });
-            let percentage = (score / questions.length) * 100;
-            let resultText = `نتيجتك: ${percentage.toFixed(2)}٪`;
+            const percentage = (score / questions.length) * 100;
+            let message = `نتيجتك: ${percentage.toFixed(2)}% `;
             if (percentage === 100) {
-                resultText += " \u2013 أشطر شطورة في الدنيا أسماء ناصر!";
+                message += "👑 أشطر شطورة في الدنيا أسماء ناصر!";
             } else if (percentage >= 90) {
-                resultText += " \u2013 أشطر الشاطرين، مبروك عليكي!";
+                message += "✨ أشطر الشاطرين، مبروك عليكي!";
             } else {
-                resultText += " \u2013 هذا ليس مستواكِ يا أسماء، يجب أن تعيدي الاختبار!";
+                message += "😞 هذا ليس مستواكِ يا أسماء، يجب أن تعيدي الاختبار!";
             }
-            document.getElementById("result").innerText = resultText;
-            document.getElementById("result").style.display = "block";
+            document.getElementById('result').innerText = message;
         }
-
-        window.onload = loadQuestions;
+        
+        loadQuestions();
     </script>
 </body>
 </html>
