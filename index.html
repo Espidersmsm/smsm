@@ -23,39 +23,31 @@
 
     <script>
         const questions = [
-            "كيف يمكن استخدام التكنولوجيا في التدريس بفعالية؟",
-            "كيف يمكن التعامل مع الطلاب ذوي الاحتياجات الخاصة؟",
-            "ما هو دور التغذية الراجعة في تحسين أداء الطلاب؟",
-            "ما هو دور الأنشطة اللاصفية في تطوير مهارات الطلاب؟",
-            "ما أهمية التقييم التكويني في العملية التعليمية؟",
-            "ما هو دور الطالب في التعلم الذاتي؟",
-            "كيف يمكن تعزيز الدافعية للتعلم لدى الطلاب؟",
-            "ما هي العلاقة بين التعلم النشط وحل المشكلات؟",
-            "ما هو أثر استخدام الاستراتيجيات الحديثة في التدريس؟",
-            "كيف يمكن تحقيق تكافؤ الفرص في التعليم؟"
+            { question: "كيف يمكن استخدام التكنولوجيا في التدريس بفعالية؟", options: ["استخدام الوسائط المتعددة", "إلغاء استخدام التكنولوجيا", "الاعتماد على الكتب فقط", "عدم استخدام أي وسائل رقمية"], correct: 0 },
+            { question: "كيف يمكن التعامل مع الطلاب ذوي الاحتياجات الخاصة؟", options: ["استخدام استراتيجيات تدريس مخصصة", "إهمال احتياجاتهم", "إعطاؤهم نفس المهام دون تعديل", "عدم تعديل البيئة الصفية"], correct: 0 },
+            { question: "ما هو دور التغذية الراجعة في تحسين أداء الطلاب؟", options: ["تحفيز التحسين المستمر", "ليس لها تأثير", "تؤخر التعلم", "تسبب الإحباط"], correct: 0 },
+            { question: "ما هو دور الأنشطة اللاصفية في تطوير مهارات الطلاب؟", options: ["تعزز التعلم الذاتي", "تضيع وقت الطلاب", "ليس لها تأثير", "تقلل من كفاءة التعلم"], correct: 0 },
+            { question: "ما أهمية التقييم التكويني في العملية التعليمية؟", options: ["يساعد في تحسين الأداء التعليمي", "لا فائدة منه", "يشتت الطلاب", "يؤثر سلبًا على الأداء"], correct: 0 }
         ];
-        
-        const answers = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; // تحديد الإجابات الصحيحة هنا
-        
+
         function loadQuestions() {
             const container = document.getElementById('questionsContainer');
             questions.forEach((q, index) => {
                 const questionDiv = document.createElement('div');
                 questionDiv.classList.add('question');
-                questionDiv.innerHTML = `
-                    <p>${index + 1}. ${q}</p>
-                    <input type="radio" name="q${index}" value="0"> إجابة صحيحة
-                    <input type="radio" name="q${index}" value="1"> إجابة خاطئة
-                `;
+                questionDiv.innerHTML = `<p>${index + 1}. ${q.question}</p>`;
+                q.options.forEach((option, i) => {
+                    questionDiv.innerHTML += `<label><input type="radio" name="q${index}" value="${i}"> ${option}</label><br>`;
+                });
                 container.appendChild(questionDiv);
             });
         }
-        
+
         function calculateScore() {
             let score = 0;
             questions.forEach((q, index) => {
                 const selected = document.querySelector(`input[name="q${index}"]:checked`);
-                if (selected && parseInt(selected.value) === answers[index]) {
+                if (selected && parseInt(selected.value) === q.correct) {
                     score++;
                 }
             });
@@ -70,7 +62,7 @@
             }
             document.getElementById('result').innerText = message;
         }
-        
+
         loadQuestions();
     </script>
 </body>
