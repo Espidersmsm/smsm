@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اختبار التطبيقات التربوية</title>
+    <title>اختبار الأستاذة السنيورة أسماء</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -31,7 +31,7 @@
 </head>
 <body>
     <div class="container">
-        <h2>اختبار التطبيقات التربوية</h2>
+        <h2>اختبار الأستاذة السنيورة أسماء</h2>
         <form id="quizForm">
             <div id="questionsContainer"></div>
             <button type="button" onclick="submitQuiz()">إرسال</button>
@@ -71,7 +71,15 @@
                 }
             });
             let percentage = (score / questions.length) * 100;
-            document.getElementById("result").innerText = `نتيجتك: ${percentage.toFixed(2)}٪`;
+            let resultText = `نتيجتك: ${percentage.toFixed(2)}٪`;
+            if (percentage === 100) {
+                resultText += " \u2013 أشطر شطورة في الدنيا أسماء ناصر!";
+            } else if (percentage >= 90) {
+                resultText += " \u2013 أشطر الشاطرين، مبروك عليكي!";
+            } else {
+                resultText += " \u2013 هذا ليس مستواكِ يا أسماء، يجب أن تعيدي الاختبار!";
+            }
+            document.getElementById("result").innerText = resultText;
             document.getElementById("result").style.display = "block";
         }
 
