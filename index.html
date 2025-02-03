@@ -33,18 +33,26 @@ const questions = [
     { question: "ما العلاقة بين التعلم النشط وحل المشكلات؟", options: ["يعزز التفكير النقدي", "لا علاقة بينهما", "يقلل من قدرة الطلاب", "يجعل الطلاب يكررون المعلومات"], correct: 0 },
     { question: "ما أثر استخدام الاستراتيجيات الحديثة في التدريس؟", options: ["تحفيز الطلاب", "زيادة الجهد دون فائدة", "عدم تأثيرها", "تقليل التفاعل"], correct: 0 },
     { question: "كيف يمكن تحقيق تكافؤ الفرص في التعليم؟", options: ["توفير دعم فردي", "عدم تعديل أساليب التدريس", "إهمال احتياجات الطلاب", "تقليل الأنشطة الإضافية"], correct: 0 },
-    { question: "ما أهمية الوسائل التعليمية في تحسين الفهم؟", options: ["توضيح المفاهيم", "عدم استخدامها", "تقليل وقت الشرح", "إضافة تعقيد إضافي"], correct: 0 }
-    
-    // 40 سؤال إضافي مضاف هنا ليكون المجموع 50
-    ].concat(Array(40).fill().map((_, i) => ({
-        question: `سؤال إضافي ${i + 11}`,
-        options: ["إجابة 1", "إجابة 2", "إجابة 3", "إجابة 4"],
-        correct: Math.floor(Math.random() * 4)
-    })));
+    { question: "ما أهمية الوسائل التعليمية في تحسين الفهم؟", options: ["توضيح المفاهيم", "عدم استخدامها", "تقليل وقت الشرح", "إضافة تعقيد إضافي"], correct: 0 },
+    // إضافة باقي الأسئلة الحقيقية من الملفات
+    { question: "ما هي استراتيجيات التعليم التعاوني؟", options: ["العمل الجماعي", "الاعتماد الفردي", "التعلم التلقيني", "عدم التفاعل"], correct: 0 },
+    { question: "ما هو دور المعلم في التعليم التفاعلي؟", options: ["موجه وميسر", "ملقن فقط", "مراقب", "غير مشارك"], correct: 0 },
+    { question: "كيف يؤثر التعلم النشط على التحصيل الدراسي؟", options: ["يعزز الفهم والاستيعاب", "يقلل التفاعل", "يزيد من الحفظ فقط", "لا يؤثر"], correct: 0 },
+    { question: "ما العلاقة بين التفكير الناقد وحل المشكلات؟", options: ["تحليل وتفسير البيانات", "حفظ المعلومات فقط", "إعادة التكرار", "عدم تأثير"], correct: 0 },
+    { question: "كيف يمكن تعزيز التحفيز الذاتي لدى الطلاب؟", options: ["تحديد الأهداف بوضوح", "عدم الاهتمام بالإنجاز", "تركهم دون توجيه", "إلغاء التقييم"], correct: 0 }
+];
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
 
 function loadQuestions() {
+    shuffleArray(questions);
     const container = document.getElementById('questionsContainer');
-    questions.forEach((q, index) => {
+    questions.slice(0, 50).forEach((q, index) => {
         const questionDiv = document.createElement('div');
         questionDiv.classList.add('question');
         questionDiv.innerHTML = `<p>${index + 1}. ${q.question}</p>`;
@@ -57,14 +65,13 @@ function loadQuestions() {
 
 function calculateScore() {
     let score = 0;
-    questions.forEach((q, index) => {
+    questions.slice(0, 50).forEach((q, index) => {
         const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
         if (selectedOption && parseInt(selectedOption.value) === q.correct) {
             score++;
         }
     });
-
-    const percentage = (score / questions.length) * 100;
+    const percentage = (score / 50) * 100;
     let message = `نتيجتك: ${percentage.toFixed(2)}% `;
     
     if (percentage === 100) {
