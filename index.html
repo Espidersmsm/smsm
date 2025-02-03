@@ -34,12 +34,15 @@
             text-align: center;
             margin-top: 20px;
         }
+        .wrong-answer {
+            color: red;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>  اختبار الأستاذة السنيورة أسماء وزوجها احمد</h1>
-        <div class="timer">⏳ الوقت المتبقي: <span id="countdown">25:00</span></div>
+        <h1>اختبار الأستاذة السنيورة أسماء وزوجها أحمد</h1>
+        <div class="timer">⏳ الوقت المتبقي: <span id="countdown">03:00</span></div>
         <form id="quizForm">
             <div id="questionsContainer"></div>
             <button type="button" onclick="calculateScore()">إرسال</button>
@@ -59,7 +62,6 @@
             { question: "ما العلاقة بين التعلم النشط وحل المشكلات؟", options: ["يعزز التفكير النقدي", "لا علاقة تربط بينهما", "يقلل من تفاعل الطلاب", "يجب إهماله"], correct: 0 },
             { question: "كيف يمكن تطوير مهارات الطلاب؟", options: ["التعلم القائم على المشاريع", "تقليل الفرص التعليمية", "إجبار الطلاب على نمط واحد", "عدم وجود تنوع في الأساليب"], correct: 0 },
             { question: "ما أهمية الوسائل التعليمية في تحسين الفهم؟", options: ["توضيح المفاهيم", "عدم استخدامها", "تقليل وقت الشرح", "إضافة تعقيد إضافي"], correct: 0 }
-            // أضف المزيد من الأسئلة هنا ليصل العدد إلى 50
         ];
 
         function getRandomQuestions(questions, count) {
@@ -67,7 +69,7 @@
             return shuffled.slice(0, count);
         }
 
-        const selectedQuestions = getRandomQuestions(allQuestions, 15);
+        const selectedQuestions = getRandomQuestions(allQuestions, 10); // اختيار 10 أسئلة فقط
 
         function loadQuestions() {
             const container = document.getElementById('questionsContainer');
@@ -82,56 +84,56 @@
             });
         }
 
-    function calculateScore() {
-        let score = 0;
-        const totalQuestions = questions.length;
-        questions.forEach((q, index) => {
-            const selected = document.querySelector(`input[name="q${index}"]:checked`);
-            if (selected) {
-                const selectedIndex = parseInt(selected.value);
-                if (selectedIndex === q.correct) {
-                    score++;
-                } else {
-                    selected.parentElement.style.color = "red"; // تمييز الإجابات الخاطئة باللون الأحمر
+        function calculateScore() {
+            let score = 0;
+            const totalQuestions = selectedQuestions.length; // تم التعديل ليحسب بناءً على 10 أسئلة فقط
+            selectedQuestions.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                if (selected) {
+                    const selectedIndex = parseInt(selected.value);
+                    if (selectedIndex === q.correct) {
+                        score++;
+                    } else {
+                        selected.parentElement.classList.add("wrong-answer"); // تمييز الإجابات الخاطئة باللون الأحمر
+                    }
                 }
-            }
-        });
+            });
 
-        let percentage = (score / totalQuestions) * 100;
-        let resultMessage = "";
-        
-        if (percentage === 100) {
-            resultMessage = "🎉 أشطر شطورة في الدنيا أسماء ناصر!";
-        } else if (percentage >= 90) {
-            resultMessage = "👏 أشطر الشاطرين مبروك عليكي!";
-        } else {
-            resultMessage = "😞 هذا ليس مستواكِ يا أسماء، يجب أن تعيدي الاختبار!";
+            let percentage = (score / totalQuestions) * 100;
+            let resultMessage = "";
+            
+            if (percentage === 100) {
+                resultMessage = "🎉 أشطر شطورة في الدنيا أسماء ناصر!";
+            } else if (percentage >= 90) {
+                resultMessage = "👏 أشطر الشاطرين مبروك عليكي!";
+            } else {
+                resultMessage = "😞 هذا ليس مستواكِ يا أسماء، يجب أن تعيدي الاختبار!";
+            }
+
+            document.getElementById('result').innerHTML = `نتيجتك: <strong>${percentage.toFixed(2)}%</strong> <br> ${resultMessage}`;
         }
 
-        document.getElementById('result').innerHTML = `نتيجتك: <strong>${percentage.toFixed(2)}%</strong> <br> ${resultMessage}`;
-    }
+        function startTimer(duration, display) {
+            let timer = duration, minutes, seconds;
+            let countdown = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+                display.textContent = minutes + ":" + seconds;
+                if (--timer < 0) {
+                    clearInterval(countdown);
+                    calculateScore();
+                    alert("⏳ انتهى الوقت! تم إرسال الاختبار تلقائيًا.");
+                }
+            }, 1000);
+        }
 
-    function startTimer(duration, display) {
-        let timer = duration, minutes, seconds;
-        let countdown = setInterval(function () {
-            minutes = parseInt(timer / 60, 10);
-            seconds = parseInt(timer % 60, 10);
-            minutes = minutes < 10 ? "0" + minutes : minutes;
-            seconds = seconds < 10 ? "0" + seconds : seconds;
-            display.textContent = minutes + ":" + seconds;
-            if (--timer < 0) {
-                clearInterval(countdown);
-                calculateScore();
-                alert("⏳ انتهى الوقت! تم إرسال الاختبار تلقائيًا.");
-            }
-        }, 1000);
-    }
-
-    window.onload = function () {
-        loadQuestions();
-        let timeLimit = 3 * 60, display = document.getElementById('countdown'); // تم التعديل إلى 12 دقيقة
-        startTimer(timeLimit, display);
-    };
+        window.onload = function () {
+            loadQuestions();
+            let timeLimit = 3 * 60, display = document.getElementById('countdown'); // العد التنازلي 3 دقائق
+            startTimer(timeLimit, display);
+        };
     </script>
 </body>
 </html>
