@@ -40,11 +40,14 @@
     </div>
 
     <script>
-        const questions = [
-            { question: "ما هو هدف التعلم التعاوني؟", options: ["تحقيق الفردية", "تنمية المهارات الاجتماعية", "زيادة الضغط على الطلاب", "إهمال التعاون"], correct: 1 },
-            { question: "ما هي استراتيجية KWLH؟", options: ["أسلوب للقراءة الفعالة", "طريقة لحل المشكلات", "تقنية حديثة للتدريس", "منهج رياضي جديد"], correct: 0 },
-            { question: "ما هو أحد عناصر استراتيجية التعلم النشط؟", options: ["الاعتماد على الحفظ فقط", "مشاركة المتعلمين بفعالية", "عدم التفاعل مع المحتوى", "إلغاء استخدام الأنشطة"], correct: 1 }
-        ];
+        const questions = [];
+        for (let i = 1; i <= 50; i++) {
+            questions.push({
+                question: `السؤال رقم ${i}: ما هو المفهوم الصحيح للتعلم النشط؟`,
+                options: ["طريقة تفاعلية", "تعلم نظري", "حفظ المعلومات فقط", "عدم التفاعل مع المحتوى"],
+                correct: 0
+            });
+        }
 
         function loadQuestions() {
             const container = document.getElementById("questionsContainer");
@@ -67,7 +70,8 @@
                     score++;
                 }
             });
-            document.getElementById("result").innerText = `نتيجتك: ${score} من ${questions.length}`;
+            let percentage = (score / questions.length) * 100;
+            document.getElementById("result").innerText = `نتيجتك: ${percentage.toFixed(2)}٪`;
             document.getElementById("result").style.display = "block";
         }
 
