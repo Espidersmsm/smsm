@@ -4,10 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>اختبار الأستاذة السنيورة أسماء</title>
+    <style>
+        body {
+            direction: rtl;
+            font-family: Arial, sans-serif;
+            text-align: right;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .timer {
+            font-size: 18px;
+            font-weight: bold;
+            color: red;
+            text-align: left;
+        }
+        .question {
+            margin-bottom: 15px;
+        }
+        .result {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>اختبار الأستاذة السنيورة أسماء</h1>
+        <div class="timer">⏳ الوقت المتبقي: <span id="countdown">25:00</span></div>
         <form id="quizForm">
             <div id="questionsContainer"></div>
             <button type="button" onclick="calculateScore()">إرسال</button>
@@ -73,7 +105,27 @@
             document.getElementById('result').innerHTML = `<strong>نتيجتك: ${percentage.toFixed(2)}%</strong> ${message}`;
         }
 
-        loadQuestions();
+        function startTimer(duration, display) {
+            let timer = duration, minutes, seconds;
+            let countdown = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+                display.textContent = minutes + ":" + seconds;
+                if (--timer < 0) {
+                    clearInterval(countdown);
+                    calculateScore();
+                    alert("⏳ انتهى الوقت! تم إرسال الاختبار تلقائيًا.");
+                }
+            }, 1000);
+        }
+
+        window.onload = function () {
+            loadQuestions();
+            let timeLimit = 25 * 60, display = document.getElementById('countdown');
+            startTimer(timeLimit, display);
+        };
     </script>
 </body>
 </html>
